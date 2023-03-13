@@ -30,19 +30,40 @@ class App extends React.Component{
         }
         //указываем, что наш собственный метод может взаимодействовать с состояниями
         this.addUser = this.addUser.bind(this)
+        this.deleteUser = this.deleteUser.bind(this)
+        this.editUser = this.editUser.bind(this)
     }
     render(){
         return (
             <div className="App">
                 <Header title="Список пользователей"/>
                 <main>
-                    <Users users={this.state.users} />
+                    <Users users={this.state.users} onEdit={this.editUser} onDelete={this.deleteUser} />
                 </main>
                 <aside>
                     <AddUser onAdd={this.addUser}/>
                 </aside>
             </div>
         );
+    }
+
+    deleteUser (id){
+        this.setState({
+            //по сути мы будем добавлять в новый массив все элементы, у которых id не будет совпадать с тем, чтот передеается в эту функцию
+            users: this.state.users.filter((el) => el.id !== id)
+        })
+    }
+
+    editUser(user){
+        //получили всех пользователей
+        let allUsers = this.state.users
+        //нашли нужного пользователя по id и заменили его передаваемым в арги
+        allUsers[user.id - 1] = user
+
+        //отчистили список и выполнили ф-ю, в которой мы добавили новый список
+        this.setState({users : []}, () =>{
+            this.setState({users: [...allUsers]})
+        })
     }
 
     addUser(user){

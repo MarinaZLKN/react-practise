@@ -9,7 +9,8 @@ class Users extends React.Component {
                 <div>
                     {this.props.users.map((user) => (
                         //передаем ключ для итерации по списку и пользователя(props)
-                        <User key={user.id} user={user}/>
+                        //передаем метод для удаления и редактирования user'а из App в User
+                        <User onDelete={this.props.onDelete} onEdit={this.props.onEdit} key={user.id} user={user}/>
                     ))}
                 </div>
             )
